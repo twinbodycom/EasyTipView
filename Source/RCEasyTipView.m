@@ -476,6 +476,7 @@ _Pragma("clang diagnostic pop")
     
     [superView addSubview:self];
     
+    [self.window bringSubviewToFront:self];
     if (_preferences.shouldDismissOnTouchOutside) {
         if (self.window) {
             UIView *dismissOverLay = [[UIView alloc] initWithFrame:self.window.bounds];
@@ -486,7 +487,6 @@ _Pragma("clang diagnostic pop")
             _dismissOverlay = dismissOverLay;
         }
     }
-    [self.window bringSubviewToFront:self];
     
     if (_delegate && [_delegate respondsToSelector:@selector(willShowTip:)]) {
         [_delegate willShowTip:self];
