@@ -110,6 +110,7 @@ _Pragma("clang diagnostic pop")
 
 @property (nonatomic, weak) UIView *presentingView;
 @property (nonatomic, strong) UIView *dismissOverlay;
+@property (nonatomic, strong) UIView *semitransparentBackground;
 @property (nonatomic, assign) CGPoint arrowTip;
 @property (nonatomic, weak) UIView *parentView;
 
@@ -476,7 +477,19 @@ _Pragma("clang diagnostic pop")
     
     [superView addSubview:self];
     
+    if (_preferences.shouldShowSemitransparentBackground) {
+        if (self.window) {
+            UIView *semitransparentBackground = [[UIView alloc] initWithFrame:self.window.bounds];
+            semitransparentBackground.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.45];
+            semitransparentBackground.userInteractionEnabled = YES;
+            semitransparentBackground.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+            [self.window addSubview:semitransparentBackground];
+            _semitransparentBackground = semitransparentBackground;
+        }
+    }
+    
     [self.window bringSubviewToFront:self];
+    
     if (_preferences.shouldDismissOnTouchOutside) {
         if (self.window) {
             UIView *dismissOverLay = [[UIView alloc] initWithFrame:self.window.bounds];
@@ -525,6 +538,9 @@ _Pragma("clang diagnostic pop")
     CGFloat velocity = _preferences.animating.springVelocity;
     if (_delegate && [_delegate respondsToSelector:@selector(willDismissTip:)]) {
         [_delegate willDismissTip:self];
+    }
+    if (_semitransparentBackground) {
+        [_semitransparentBackground removeFromSuperview];
     }
     if (_dismissOverlay) {
         [_dismissOverlay removeFromSuperview];

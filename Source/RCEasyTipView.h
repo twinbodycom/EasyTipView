@@ -28,6 +28,7 @@ typedef NS_ENUM(NSInteger, ArrowPosition){
  Defaults to NO.
  */
 @property (nonatomic, assign) BOOL shouldDismissOnTouchOutside;
+@property (nonatomic, assign) BOOL shouldShowSemitransparentBackground;
 
 
 - (instancetype)initWithDefaultPreferences;
